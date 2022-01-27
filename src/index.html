@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      Low Quality Image Placeholders, generated with Fastly's Compute@Edge
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: "Roboto", sans-serif;
+        text-align: center;  
+      }
+      .lazy-loaded {
+        position: relative;
+        display: block;
+        margin: auto;
+      }
+      section,
+      .lazy-loaded {
+        position: relative;
+      }
+      section:not(#photos)::before {
+        font-size: 1.1em;
+        content: attr(data-kb);
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 1em;
+        background: #000;
+        color: #fff;
+        display: none;
+        z-index: 100;
+      }
+      section:not(#photos):hover::before {
+        display: block;
+      }
+      header {
+        margin: 0.5em;
+      }
+      #photos {
+        line-height: 0;
+        -webkit-column-count: 4;
+        -webkit-column-gap: 0px;
+        -moz-column-count: 4;
+        -moz-column-gap: 0px;
+        column-count: 4;
+        column-gap: 0px;
+      }
+      #photos img {
+        width: 100% !important;
+        height: auto !important;
+      }
+      @media (max-width: 1000px) {
+        #photos {
+          -moz-column-count: 3;
+          -webkit-column-count: 3;
+          column-count: 3;
+        }
+      }
+      @media (max-width: 400px) {
+        #photos {
+          -moz-column-count: 1;
+          -webkit-column-count: 1;
+          column-count: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      Tap to toggle between the low quality image placeholder (LQIP) and the
+      full-quality image.
+    </header>
+    <main>
+      <section id="photos">
+        <section data-kb="14kB" data-src-size="68kB">
+          <img
+            class="lazy-loaded"
+            src="/lqip/photo-1501820488136-72669149e0d4?fit=crop&w=800"
+            data-src="/photo-1501820488136-72669149e0d4?fit=crop&w=800"
+          />
+        </section>
+        <section data-kb="29kB" data-src-size="119kB">
+          <img
+            class="lazy-loaded"
+            src="/lqip/photo-1526336024174-e58f5cdd8e13?fit=crop&w=800"
+            data-src="/photo-1526336024174-e58f5cdd8e13?fit=crop&w=800"
+          />
+        </section>
+        <section data-kb="29kB" data-src-size="185kB">
+          <img
+            class="lazy-loaded"
+            src="/lqip/photo-1543852786-1cf6624b9987?fit=crop&w=800"
+            data-src="/photo-1543852786-1cf6624b9987?fit=crop&w=800"
+          />
+        </section>
+        <section data-kb="26kB" data-src-size="117kB">
+          <img
+            class="lazy-loaded"
+            src="/lqip/photo-1492370284958-c20b15c692d2?fit=crop&w=800"
+            data-src="/photo-1492370284958-c20b15c692d2?fit=crop&w=800"
+          />
+        </section>
+        <section data-kb="14kB" data-src-size="93kB">
+          <img
+            class="lazy-loaded"
+            src="/lqip/photo-1493406300581-484b937cdc41?fit=crop&w=800"
+            data-src="/photo-1493406300581-484b937cdc41?fit=crop&w=800"
+          />
+        </section>
+      </section>
+    </main>
+    <script>
+      document.querySelectorAll("img.lazy-loaded").forEach((img) => {
+        img.addEventListener(
+          "click",
+          function (event) {
+            const src = `${event.target.src}`;
+            event.target.src = event.target.dataset.src;
+            event.target.dataset.src = src;
+            const wrapper = event.target.closest("section");
+            const kb = wrapper.dataset.kb;
+            wrapper.dataset.kb = wrapper.dataset.srcSize;
+            wrapper.dataset.srcSize = kb;
+          },
+          false
+        );
+      });
+    </script>
+  </body>
+</html>

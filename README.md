@@ -1,2 +1,1 @@
-# edge-lqip
-A low quality image placeholder (LQIP) generator, at the edge.
+# A low quality image placeholder (LQIP) generator, using Fastly's Compute@Edge.

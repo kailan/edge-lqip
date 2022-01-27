@@ -1,0 +1,22 @@
+---
+schemaVersion: 1
+id: edge-lqip
+title: Low quality image placeholders
+image:
+  href: /screenshot.jpg
+  alt: Low quality image placeholders (LQIP) on Fastly's Compute@Edge
+description: |
+    Generate low quality image placeholders on the fly and serve them from the edge.
+editUrl: https://github.com/doramatadora/edge-lqip/edit/main/src/demo-manifest
+views:
+  endUser:
+    mode: frame
+    href: /
+sessions: true
+---
+
+## What's happening here?
+
+Low-quality image placeholders (LQIP) are generated on-the-fly using [BlurHash](https://github.com/woltapp/blurhash), by a Compute@Edge service written in Rust 🦀 and compiled to WebAssembly. 
+
+The code lives at [github.com/doramatadora/edge-lqip](https://github.com/doramatadora/edge-lqip).

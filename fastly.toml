@@ -1,0 +1,20 @@
+# This file describes a Fastly Compute@Edge package. To learn more visit:
+# https://developer.fastly.com/reference/fastly-toml/
+
+authors = []
+description = "A low quality image placeholder (LQIP) generator, using Fastly's Compute@Edge"
+language = "rust"
+manifest_version = 2
+name = "edge-lqip"
+service_id = "4JtgxbHDuyoBr978SvR2BT"
+
+[local_server]
+  [local_server.backends]
+    [local_server.backends.images_backend]
+      url = "https://images.unsplash.com"
+
+[setup]
+  [setup.backends]
+    [setup.backends.images_backend]
+      address = "images.unsplash.com"
+      port = 443
