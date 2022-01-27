@@ -6,7 +6,7 @@ image:
   href: /screenshot.jpg
   alt: Low quality image placeholders (LQIP) on Fastly's Compute@Edge
 description: |
-    Generate beautifully blurred low quality image placeholders and serve them from the edge.
+    Generate delightful low quality image placeholders and serve them from the edge – useful for reducing initial page weight.
 editUrl: https://github.com/doramatadora/edge-lqip/edit/main/src/demo-manifest
 views:
   endUser:
