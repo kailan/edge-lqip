@@ -19,4 +19,4 @@ sessions: true
 
 Low-quality image placeholders (LQIP) are generated on-the-fly using [BlurHash](https://github.com/woltapp/blurhash), by a Compute@Edge service written in Rust 🦀 and compiled to WebAssembly. 
 
-The code lives at [github.com/doramatadora/edge-lqip](https://github.com/doramatadora/edge-lqip).
+Head over to the [LQIP tutorial page](/solutions/tutorials/low-quality-image-placeholders) for a step-by-step implementation guide. 
