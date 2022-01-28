@@ -10,11 +10,11 @@ service_id = "4JtgxbHDuyoBr978SvR2BT"
 
 [local_server]
   [local_server.backends]
-    [local_server.backends.images_backend]
+    [local_server.backends.content_backend]
       url = "https://images.unsplash.com"
 
 [setup]
   [setup.backends]
-    [setup.backends.images_backend]
+    [setup.backends.content_backend]
       address = "images.unsplash.com"
       port = 443

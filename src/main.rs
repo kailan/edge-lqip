@@ -1,12 +1,12 @@
 use blurhash::{decode, encode};
-use fastly::http::{header, Method, StatusCode};
+use fastly::http::{header, Method};
 use fastly::{mime, Error, Request, Response};
 use image::io::Reader as ImageReader;
 use image::{DynamicImage, GenericImageView, ImageBuffer};
 use std::io::Cursor;
 
-const IMAGES_BACKEND: &str = "images_backend";
-const IMAGES_HOST: &str = "images.unsplash.com";
+const CONTENT_BACKEND: &str = "content_backend";
+const CONTENT_HOST: &str = "images.unsplash.com";
 
 // Generate a LQIP (low-quality image placeholder) from a given image
 fn lqip_generator(mut req: Request) -> Result<Response, Error> {
@@ -20,7 +20,7 @@ fn lqip_generator(mut req: Request) -> Result<Response, Error> {
     req.set_query_str(format!("{}&q=1", &req.get_query_str().unwrap_or_default()));
 
     // Retrieve a low-quality version of the image from the image backend.
-    let img_bytes = req.send(IMAGES_BACKEND)?.take_body_bytes();
+    let img_bytes = req.send(CONTENT_BACKEND)?.take_body_bytes();
 
     // Decode the image.
     let img = ImageReader::new(Cursor::new(img_bytes))
@@ -56,7 +56,7 @@ fn lqip_generator(mut req: Request) -> Result<Response, Error> {
 #[fastly::main]
 fn main(mut req: Request) -> Result<Response, Error> {
     // Set an override host header.
-    req.set_header(header::HOST, IMAGES_HOST);
+    req.set_header(header::HOST, CONTENT_HOST);
     // Pattern match on the request method and path.
     match (req.get_method(), req.get_path()) {
         // Demo set-up (see https://developer.fastly.com/solutions/demos)
@@ -69,15 +69,14 @@ fn main(mut req: Request) -> Result<Response, Error> {
             .with_header(header::CACHE_CONTROL, "public, max-age=31536000, immutable")),
         // If the request is a `GET` to the `/` path, serve a html page.
         (&Method::GET, "/") => Ok(Response::new().with_body_text_html(include_str!("index.html"))),
+        
         // If the request is a `GET` to the `/lqip/*` path, generate a LQIP (low-quality image placeholder).
         (&Method::GET, path) if path.starts_with("/lqip/") => lqip_generator(req),
-        // Forward `GET` to the `/photo*` path, to the image backend.
-        (&Method::GET, path) if path.starts_with("/photo") => {
-            let mut beresp = req.send(IMAGES_BACKEND)?;
+        // Forward all other requests to the content backend.
+        _ => {
+            let mut beresp = req.send(CONTENT_BACKEND)?;
             beresp.set_header(header::CACHE_CONTROL, "public, max-age=31536000, immutable");
             Ok(beresp)
-        }
-        // Catch all other requests and return a 404.
-        _ => Ok(Response::from_status(StatusCode::NOT_FOUND)),
+        },
     }
 }
