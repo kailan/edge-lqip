@@ -1,4 +1,4 @@
-use blurhash_ng::{decode, encode};
+use blurhash::{decode, encode};
 use fastly::http::{header, Method, StatusCode};
 use fastly::{mime, Error, Request, Response};
 use image::io::Reader as ImageReader;
@@ -31,10 +31,10 @@ fn lqip_generator(mut req: Request) -> Result<Response, Error> {
     let (width, height) = &img.dimensions();
 
     // Generate a blurhash.
-    let blurhash = blurhash_ng::encode(7, 6, *width, *height, &img.to_rgba8().into_vec());
+    let blurhash = encode(7, 6, *width, *height, &img.to_rgba8().into_vec());
 
     // Turn the blurhash into an array of pixels for our placeholder image.
-    let pixels = blurhash_ng::decode(&blurhash, *width, *height, 1.0);
+    let pixels = decode(&blurhash, *width, *height, 1.0);
 
     // Generate the LQIP.
     let placeholder =
