@@ -71,8 +71,8 @@ fn main(mut req: Request) -> Result<Response, Error> {
         (&Method::GET, "/") => Ok(Response::new().with_body_text_html(include_str!("index.html"))),
         // If the request is a `GET` to the `/lqip/*` path, generate a LQIP (low-quality image placeholder).
         (&Method::GET, path) if path.starts_with("/lqip/") => lqip_generator(req),
-        // Forward other `GET` requests to the image backend.
-        (&Method::GET, _) => {
+        // Forward `GET` to the `/photo*` path, to the image backend.
+        (&Method::GET, path) if path.starts_with("/photo") => {
             let mut beresp = req.send(IMAGES_BACKEND)?;
             beresp.set_header(header::CACHE_CONTROL, "public, max-age=31536000, immutable");
             Ok(beresp)
