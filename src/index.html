@@ -15,18 +15,16 @@
     <style>
       * {
         font-family: "Roboto", sans-serif;
-        text-align: center;  
+        text-align: center;
       }
-      .lazy-loaded {
-        position: relative;
+      section,
+      .lazy {
+        width: 90%;
+        position: relative;        
         display: block;
         margin: auto;
       }
-      section,
-      .lazy-loaded {
-        position: relative;
-      }
-      section:not(#photos)::before {
+      section::before {
         font-size: 1.1em;
         content: attr(data-kb);
         position: absolute;
@@ -39,100 +37,110 @@
         display: none;
         z-index: 100;
       }
-      section:not(#photos):hover::before {
+      section:hover::before {
         display: block;
       }
       header {
-        margin: 0.5em;
+        font-size: 1.5em;
+        margin: auto;
+        padding: 2em;
+        height: 100vh;
+        align-items: center;
+        display: flex;
       }
-      #photos {
-        line-height: 0;
-        -webkit-column-count: 4;
-        -webkit-column-gap: 0px;
-        -moz-column-count: 4;
-        -moz-column-gap: 0px;
-        column-count: 4;
-        column-gap: 0px;
-      }
-      #photos img {
-        width: 100% !important;
-        height: auto !important;
-      }
-      @media (max-width: 1000px) {
-        #photos {
-          -moz-column-count: 3;
-          -webkit-column-count: 3;
-          column-count: 3;
-        }
-      }
-      @media (max-width: 400px) {
-        #photos {
-          -moz-column-count: 1;
-          -webkit-column-count: 1;
-          column-count: 1;
-        }
+      .load-indicator {
+        z-index: 200;
+        position: fixed;
+        background: #000;
+        color: #fff;
+        font-size: 1.1em;
+        padding: 1em;
       }
     </style>
   </head>
   <body>
+    <aside class="load-indicator">
+      <span id="loadIndicator">0</span>/5 loaded
+    </aside>
     <header>
-      Tap to toggle between the low quality image placeholder (LQIP) and the
-      full-quality image.
+      <p>
+        High quality images replace LQIPs as you scroll.
+        <br />
+        Tap to toggle between the image versions.
+        <br /><br />
+        &darr;
+      </p>
     </header>
     <main>
-      <section id="photos">
-        <section data-kb="14kB" data-src-size="68kB">
-          <img
-            class="lazy-loaded"
-            src="/lqip/photo-1501820488136-72669149e0d4?fit=crop&w=800"
-            data-src="/photo-1501820488136-72669149e0d4?fit=crop&w=800"
-          />
-        </section>
-        <section data-kb="29kB" data-src-size="119kB">
-          <img
-            class="lazy-loaded"
-            src="/lqip/photo-1526336024174-e58f5cdd8e13?fit=crop&w=800"
-            data-src="/photo-1526336024174-e58f5cdd8e13?fit=crop&w=800"
-          />
-        </section>
-        <section data-kb="29kB" data-src-size="185kB">
-          <img
-            class="lazy-loaded"
-            src="/lqip/photo-1543852786-1cf6624b9987?fit=crop&w=800"
-            data-src="/photo-1543852786-1cf6624b9987?fit=crop&w=800"
-          />
-        </section>
-        <section data-kb="26kB" data-src-size="117kB">
-          <img
-            class="lazy-loaded"
-            src="/lqip/photo-1492370284958-c20b15c692d2?fit=crop&w=800"
-            data-src="/photo-1492370284958-c20b15c692d2?fit=crop&w=800"
-          />
-        </section>
-        <section data-kb="14kB" data-src-size="93kB">
-          <img
-            class="lazy-loaded"
-            src="/lqip/photo-1493406300581-484b937cdc41?fit=crop&w=800"
-            data-src="/photo-1493406300581-484b937cdc41?fit=crop&w=800"
-          />
-        </section>
+      <section data-kb="14kB" data-src-size="68kB">
+        <img
+          class="lazy"
+          src="/lqip/photo-1501820488136-72669149e0d4?fit=crop&w=800"
+          data-src="/photo-1501820488136-72669149e0d4?fit=crop&w=800"
+        />
+      </section>
+      <section data-kb="29kB" data-src-size="119kB">
+        <img
+          class="lazy"
+          src="/lqip/photo-1526336024174-e58f5cdd8e13?fit=crop&w=800"
+          data-src="/photo-1526336024174-e58f5cdd8e13?fit=crop&w=800"
+        />
+      </section>
+      <section data-kb="29kB" data-src-size="185kB">
+        <img
+          class="lazy"
+          src="/lqip/photo-1543852786-1cf6624b9987?fit=crop&w=800"
+          data-src="/photo-1543852786-1cf6624b9987?fit=crop&w=800"
+        />
+      </section>
+      <section data-kb="26kB" data-src-size="117kB">
+        <img
+          class="lazy"
+          src="/lqip/photo-1492370284958-c20b15c692d2?fit=crop&w=800"
+          data-src="/photo-1492370284958-c20b15c692d2?fit=crop&w=800"
+        />
+      </section>
+      <section data-kb="14kB" data-src-size="93kB">
+        <img
+          class="lazy"
+          src="/lqip/photo-1493406300581-484b937cdc41?fit=crop&w=800"
+          data-src="/photo-1493406300581-484b937cdc41?fit=crop&w=800"
+        />
       </section>
     </main>
     <script>
-      document.querySelectorAll("img.lazy-loaded").forEach((img) => {
-        img.addEventListener(
-          "click",
-          function (event) {
-            const src = `${event.target.src}`;
-            event.target.src = event.target.dataset.src;
-            event.target.dataset.src = src;
-            const wrapper = event.target.closest("section");
-            const kb = wrapper.dataset.kb;
-            wrapper.dataset.kb = wrapper.dataset.srcSize;
-            wrapper.dataset.srcSize = kb;
-          },
-          false
-        );
+      const toggleSources = (event) => {
+        const src = `${event.target.src}`;
+        event.target.src = event.target.dataset.src;
+        event.target.dataset.src = src;
+        const wrapper = event.target.closest("section");
+        const kb = wrapper.dataset.kb;
+        wrapper.dataset.kb = wrapper.dataset.srcSize;
+        wrapper.dataset.srcSize = kb;
+      };
+      document.addEventListener("DOMContentLoaded", () => {
+        const loadIndicator = document.getElementById("loadIndicator");
+        loadIndicator.innerText = 0;
+        const images = document.querySelectorAll("img.lazy");
+        // Set up an intersection observer to detect when images become visible on the viewport.
+        const imageObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // Replace the placeholder with the full quality image.
+              toggleSources(entry);
+              // We don't need to observe this element anymore.
+              imageObserver.unobserve(entry.target);
+              loadIndicator.innerText = parseInt(loadIndicator.innerText) + 1;
+            }
+          });
+        });
+        // Loop through all images and observe them.
+        images.forEach((img) => {
+          imageObserver.observe(img);
+          img.addEventListener("click", (event) => {
+            toggleSources(event);
+          });
+        });
       });
     </script>
   </body>
