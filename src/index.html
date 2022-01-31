@@ -127,17 +127,21 @@
         loadIndicator.innerText = 0;
         const images = document.querySelectorAll("img.lazy");
         // Set up an intersection observer to detect when images become visible on the viewport.
-        const imageObserver = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              // Replace the placeholder with the full quality image.
-              toggleSources(entry);
-              // We don't need to observe this element anymore.
-              imageObserver.unobserve(entry.target);
-              loadIndicator.innerText = parseInt(loadIndicator.innerText) + 1;
-            }
-          });
-        });
+        const imageObserver = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                // if (entry.intersectionRatio < 0.25) return;
+                // Replace the placeholder with the full quality image.
+                toggleSources(entry);
+                // We don't need to observe this element anymore.
+                imageObserver.unobserve(entry.target);
+                loadIndicator.innerText = parseInt(loadIndicator.innerText) + 1;
+              }
+            });
+          },
+          { threshold: 0.25 }
+        );
         // Loop through all images and observe them.
         images.forEach((img) => {
           imageObserver.observe(img);
