@@ -131,7 +131,6 @@
           function (entries) {
             entries.forEach(function (entry) {
               if (entry.isIntersecting) {
-                // if (entry.intersectionRatio < 0.25) return;
                 // Replace the placeholder with the full quality image.
                 toggleSources(entry);
                 // We don't need to observe this element anymore.
