@@ -1,10 +1,10 @@
 # This file describes a Fastly Compute@Edge package. To learn more visit:
 # https://developer.fastly.com/reference/fastly-toml/
 
-authors = []
+authors = ["dmilitaru@fastly.com", "kblanks@fastly.com"]
 description = "A low quality image placeholder (LQIP) generator, using Fastly's Compute@Edge"
 language = "rust"
-manifest_version = 2
+manifest_version = 3
 name = "edge-lqip"
 service_id = "4JtgxbHDuyoBr978SvR2BT"
 
